@@ -10,6 +10,8 @@ Cloud Run에서 돌릴 맞춤법 API MVP입니다.
 
 ## API
 
+### Internal JSON API
+
 ```http
 POST /api/analyze
 Content-Type: application/json
@@ -29,6 +31,35 @@ Content-Type: application/json
 - `spelling.suggestions`: speller-api 교정 후보
 - `tone.findings`: 공격적/강압적/이상한 화법 감지 결과
 - `tone.summary`: 사용자에게 보여줄 지적 문구
+
+### Kakao Open Builder Skill webhook
+
+```http
+POST /kakao/skill
+Content-Type: application/json
+
+{
+  "userRequest": {
+    "utterance": "되요 돼요 뭐가 맞아?"
+  }
+}
+```
+
+응답은 Kakao Skill v2 형식입니다.
+
+```json
+{
+  "version": "2.0",
+  "template": {
+    "outputs": [
+      { "simpleText": { "text": "..." } }
+    ],
+    "quickReplies": []
+  }
+}
+```
+
+Kakao Skill endpoint는 카카오가 커스텀 API 헤더를 붙이기 어렵기 때문에 `API_KEY` 보호 대상에서 제외합니다. `/api/analyze`는 `API_KEY`가 설정되어 있으면 계속 보호됩니다.
 
 ## Local
 
